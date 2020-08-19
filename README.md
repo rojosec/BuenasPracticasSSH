@@ -14,7 +14,7 @@ Es importante tener en cuenta que siendo cifrado este mismo, se deben implementa
 
 * Verificación de la version del protocolo ( por defecto debe ser 2.0 )
 * Cambio de contraseña (es necesario que implemente una contraseña ROBUSTA).
-* Cambio de puerto.
+* Cambio de puerto (tiene que ser mayor a 1024).
 * Limitación de acceso por usuarios.
 * Desactivar acceso root.
 * Autenticación mediante llaves ( publica y privada )
