@@ -36,11 +36,9 @@ if [ "$(id -u)" = 0 ]; then
     echo -e "\t VERIFICANDO EL SERVICIO"
 
     if [ -d /etc/ssh ]; then
-        Loading
-        sleep 3
-            clear
-            echo -e "\t ${green}SERVICIO DISPONIBLE ${end} \n"
-        sleep 2
+        Loading;sleep 2
+        clear
+        echo -e "\t ${green}SERVICIO DISPONIBLE ${end} \n";sleep 2
     else
         Loading
         clear
@@ -101,7 +99,48 @@ function AutenticaciondeLlaves(){
     echo -e "${yellow}[i]${end} Generando Llaves"
     Loading
     ssh-keygen
-    
+    echo -e "\n"
+}
+
+function LimiteUsuarios(){
+    echo -e "${green}[5] Limitación de acceso por usuarios.\n${end}"
+    read -p "Desea limitar acceso a usuarios [S/n]: " ACCESO 
+
+case $ACCESO in
+    s|S) 
+        # INGRESO DE USUARIOS
+        read -p "¿Cuantos usuarios desea limitar? " USUARIOS 
+
+        # VALIDACION DE USUARIOS
+        while [[ $USUARIOS -le 0 || $USUARIOS = "" || $USUARIOS =~ $LETRAS ]]; do
+            read -p "¿Cuantos usuarios desea limitar? " USUARIOS
+        done
+
+        # ARREGLO PARA ALMACENAR USUARIOS
+        declare -a LIMITE=()
+        declare -a STORAGE=()
+
+        # COMPARACION E 
+        if [[ $USUARIOS != $LETRAS && $USUARIOS != 0 && $USUARIOS != "" ]];then
+            for u in $(seq 1 $USUARIOS);do
+               read -p "Usuario #$u: " USUARIO
+               LIMITE+=($USUARIO)
+            done
+        # ITERACIÓN DEL ARREGLO LIMITE
+            for n in "${LIMITE[@]}";do
+                STORAGE+=($n)
+            done
+            echo -e "#Limitación de acceso por usuarios." >> /etc/ssh/sshd_config
+            echo -n "AllowUsers ${STORAGE[@]}" >> /etc/ssh/sshd_config
+        fi
+    ;;
+
+    n|N)
+       exit 0
+    ;;
+
+esac
+
 }
 
 function ReiniciarServicioSSH(){
@@ -113,4 +152,5 @@ Constrasena
 CambiodePuerto
 DesactivarAccesoRoot
 AutenticaciondeLlaves
+LimiteUsuarios
 ReiniciarServicioSSH
