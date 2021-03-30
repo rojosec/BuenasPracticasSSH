@@ -1,5 +1,5 @@
 #!/bin/bash
-# Autor: ErickWhiteHat
+# Autor: Erick Rojo
 
 green="\e[0;32m\033[1m"
 end="\033[0m\e[0m"
